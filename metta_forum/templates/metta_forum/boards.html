@@ -1,0 +1,20 @@
+{% extends 'metta_forum/base.html' %}
+{% block content %}
+<section class="vh-50 vw-100 
+    d-flex justify-content-center  flex-wrap 
+    ">
+    {% for board in boards %}
+    <div class="card" style="width:300px; height:400px">
+        <img src="../static/img/{{board.id}}.jpg" height="180px" alt="" class="card-img-top" alt="{{ board.name }}">
+        <div class="card-body">
+            <h5 class="card-title">
+                <a href="{% url 'metta_forum:board' board.pk %}">{{ board.name }}</a>
+            </h5>
+            <p class="card-text">{{ board.description }}</p>
+        </div>
+    </div>
+    {% endfor %}
+
+</section>
+
+{% endblock content %}

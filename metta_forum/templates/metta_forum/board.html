@@ -1,0 +1,9 @@
+{% extends 'metta_forum/base.html' %}
+{% block content %}
+<ul>
+    {% for topic in topics %}
+    <li><a href="{% url 'metta_forum:topic' topic.pk %}">{{ topic.name }}</a></li>
+    {% empty %}
+    <p>There's no topic on this board yet! Feel free to create one~</p>
+    {% endfor %}</ul>
+{% endblock content %}
