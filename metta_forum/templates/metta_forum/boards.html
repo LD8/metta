@@ -4,8 +4,10 @@
     d-flex justify-content-center  flex-wrap 
     ">
     {% for board in boards %}
-    <div class="card" style="width:300px; height:400px">
-        <img src="../static/img/{{board.id}}.jpg" height="180px" alt="" class="card-img-top" alt="{{ board.name }}">
+    <div class="card mb-4" style="width:300px; height:400px">
+        <a href="{% url 'metta_forum:board' board.pk %}"><img src="/static/metta_forum/img/{{board.id}}.jpg"
+                height="180px" alt="" class="card-img-top" alt="{{ board.name }}">
+        </a>
         <div class="card-body">
             <h5 class="card-title">
                 <a href="{% url 'metta_forum:board' board.pk %}">{{ board.name }}</a>
