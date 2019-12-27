@@ -1,0 +1,5 @@
+<div class="container p-3 border border-secondary rounded" style="background-color: rgba(244, 243, 239, 0.87);">
+    <a href="{% url 'metta_forum:post' post.pk %}">{{ post.title }}</a>
+    <hr>
+    <p>{{ post.content }}</p>
+</div>

@@ -1,10 +1,20 @@
 {% extends 'metta_forum/base.html' %}
 {% block content %}
-<ul>
+<section class="pb-5 " style="background-color: rgba(230, 228, 221, 0.589);">
     {% for topic in topics %}
-    <li><a href="{% url 'metta_forum:topic' topic.pk %}">{{ topic.name }}</a></li>
+    <div class="container">
+        <h5 class="mt-5 p-1"><a href="{% url 'metta_forum:topic' topic.pk %}">{{ topic.name }}</a></h5>
+        <div class="flex">
+            {% for post in topic.post_set.all %}
+            {% include 'metta_forum/post_div.html' %}
+            {% empty %}
+            {% include 'metta_forum/emp.html' %}
+            {% endfor %}
+        </div>
+        <a class="float-right" href="{% url 'metta_forum:topic' topic.pk %}">more...</a>
+    </div>
     {% empty %}
-    <p>There's no topic on this board yet! Feel free to create one~</p>
+    {% include 'metta_forum/emp.html' %}
     {% endfor %}
-</ul>
+</section>
 {% endblock content %}

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # my apps
     'metta_forum',
+    'users',
     
     # default apps
     'django.contrib.admin',

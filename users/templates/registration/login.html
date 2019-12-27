@@ -1,0 +1,34 @@
+{% extends 'metta_forum/base.html' %}
+
+{% block content %}
+<section class="container border border-secondary rounded-lg" style="background-color: rgba(255, 255, 255, 0.5);">
+    {% if form.errors %}
+    <p class="text-center pt-3 text-info">Incorrect username or password. Pleae try again.</p>
+    {% endif %}
+    <form class="p-3" action="{% url 'users:login' %}" method="POST">
+        {% csrf_token %}
+        <h5 class="border-bottom mt-2 pb-2 ">Sign In</h5>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Username</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <small id="emailHelp" class="form-text text-muted">We'll never reveal your personal
+                information</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">Remember me</label>
+        </div>
+        <button name="submit" class="btn btn-info">Sign In</button>
+        <input type="hidden" name="next" value="{% url 'metta_forum:index' %}">
+    </form>
+
+    <p class="border-top pl-3">
+        <small class="form-text text-muted">Don't have an account?</small>
+        <a href="{% url 'users:register' %}" class="mt-2 btn btn-info ">Sign Up</a>
+    </p>
+</section>
+{% endblock content %}

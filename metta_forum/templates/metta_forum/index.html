@@ -29,7 +29,11 @@
 
         <section class="col-lg-4 border border-secondary rounded-lg"
             style="background-color: rgba(255, 255, 255, 0.5);">
-            <form class="p-3">
+            {% if form.errors %}
+            <p class="text-center pt-3 text-info">Incorrect username or password. Pleae try again.</p>
+            {% endif %}
+            <form class="p-3" action="" method="POST">
+                {% csrf_token %}
                 <h5 class="border-bottom mt-2 pb-2 ">Sign In</h5>
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
@@ -50,7 +54,7 @@
 
             <p class="border-top pl-3">
                 <small class="form-text text-muted">Don't have an account?</small>
-                <a href="#" class="mt-2 btn btn-info ">Sign Up</a>
+                <a href="{% url 'users:register' %}" class="mt-2 btn btn-info ">Sign Up</a>
             </p>
         </section>
 

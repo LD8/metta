@@ -1,5 +1,10 @@
 {% extends 'metta_forum/base.html' %}
 {% block content %}
-<h4>{{post.name}}</h4>
-<p>{{post.content}}</p>
+<section class="container" style="background-color: rgba(230, 228, 221, 0.589);">
+    <div class="container p-3 border border-secondary rounded" style="background-color: rgba(244, 243, 239, 0.87);">
+        <h4>{{ post.title }}</h4>
+        <hr>
+        <p>{{ post.content }}</p>
+    </div>
+</section>
 {% endblock content %}

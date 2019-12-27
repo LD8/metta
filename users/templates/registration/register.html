@@ -1,0 +1,12 @@
+{% extends 'metta_forum/base.html' %}
+
+{% block content %}
+<section class="container border border-secondary rounded-lg" style="background-color: rgba(255, 255, 255, 0.5);">
+    <form class="p-3" action="{% url 'users:register' %}" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Sign Up</button>
+        <input type="hidden" name="next" value="{% url 'metta_forum:boards' %}">
+    </form>
+</section>
+{% endblock content %}

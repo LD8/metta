@@ -29,13 +29,19 @@
             </li>
         </ul>
 
+        {% if user.is_authenticated %}
+        <p>Hello, {{ user.username }}</p>
+        <a href="{% url 'users:logout' %}">Log Out</a>
+        {% else %}
+        <a href="{% url 'users:login' %}">Log In</a>
+        <a href="{% url 'users:register' %}">Sign Up</a>
+        {% endif %}
+
     </nav>
     <form action="" class="form-inline p-2 mx-auto" style="padding-top: 0px; width: 400px;">
         <input type="search" class="form-control mr-sm-2" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success mx-auto" style="width: 100px">Search</button>
     </form>
-
-
 
     {% block content %}
     {% endblock content %}
