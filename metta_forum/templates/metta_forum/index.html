@@ -32,12 +32,12 @@
             {% if form.errors %}
             <p class="text-center pt-3 text-info">Incorrect username or password. Pleae try again.</p>
             {% endif %}
-            <form class="p-3" action="" method="POST">
+            <form class="p-3" action="{% url 'users:login' %}" method="POST">
                 {% csrf_token %}
                 <h5 class="border-bottom mt-2 pb-2 ">Sign In</h5>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                     <small id="emailHelp" class="form-text text-muted">We'll never reveal your personal
                         information</small>
                 </div>
