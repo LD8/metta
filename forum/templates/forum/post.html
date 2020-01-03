@@ -1,0 +1,17 @@
+{% extends 'forum/base.html' %}
+
+{% block header %}
+<h2 class="font-weight-light">{{ post.title }}</h2>
+{% endblock header %}
+
+{% block content %}
+<div class=" bg-white shadow-lg p-3">
+    {% if post.author == user %}
+    <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
+        class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
+    {% endif %}
+    <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+    <p>{{ post.content | linebreaks }}</p>
+</div>
+
+{% endblock content %}

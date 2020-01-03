@@ -1,12 +1,14 @@
-{% extends 'metta_forum/base.html' %}
+{% extends 'forum/base.html' %}
+{% load bootstrap4 %}
+
+{% block header %}
+<h2 class="font-weight-light">Please Register</h2>
+{% endblock header %}
 
 {% block content %}
-<section class="container border border-secondary rounded-lg" style="background-color: rgba(255, 255, 255, 0.5);">
-    <form class="p-3" action="{% url 'users:register' %}" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button name="submit">Sign Up</button>
-        <input type="hidden" name="next" value="{% url 'metta_forum:boards' %}">
-    </form>
-</section>
+<form class="form bg-white p-3 shadow-lg" action="{% url 'users:register' %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button name="submit" class="px-4 mt-3 btn btn-outline-info">Register</button>
+</form>
 {% endblock content %}

@@ -1,0 +1,59 @@
+{% load bootstrap4 %}
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="{% static 'metta_forum/img/metta.png' %}">
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    <title>Metta</title>
+</head>
+
+<body >
+    <nav class="navbar navbar-expand-md navbar-light shadow mb-4">
+        <a href="{% url 'forum:index' %}" class="navbar-brand">
+            <img src="{% static 'forum/img/metta.png' %}" alt="metta forum logo" width="30" height="30"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a href="{% url 'forum:topics' %}" class="nav-link">Topics</a></li>
+                {% if topic %}
+                <li class="nav-item">
+                    <a href="{% url 'forum:topic' topic.pk %}" class="nav-link">{{ topic|slice:'20' }}</a></li>
+                {% if post %}
+                <li class="nav-item active" aria-current="page">
+                    <a href="{% url 'forum:post' topic.pk post.pk %}" class="nav-link">{{ post.title|slice:':20' }}...</a></li>
+                {% endif %}
+                {% endif %}
+
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <li class="navbar-text">Welcome {{user.username}}</li>
+                <li class="nav-item"><a href="{% url 'users:logout' %}" class="nav-link">Log Out</a></li>
+                {% else %}
+                <li class="nav-item"><a href="{% url 'users:register' %}" class="nav-link">Register</a></li>
+                <li class="nav-item"><a href="{% url 'users:login' %}" class="nav-link">Sign In</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container" role="main">
+        <header class="mb-5 border-bottom ">
+            {% block header %}{% endblock header %}
+        </header>
+        <div class="">
+            {% block content %}{% endblock content %}
+        </div>
+    </main>
+</body>
+
+</html>

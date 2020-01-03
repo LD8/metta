@@ -1,0 +1,15 @@
+{% extends 'forum/base.html' %}
+{% load bootstrap4 %}
+
+{% block header %}
+<h3 class="font-weight-light">Please compose your post here</h3>
+{% endblock header %}
+
+{% block content %}
+<form class="form bg-white p-3 shadow-lg" action="{% url 'forum:new_post' topic.pk %}" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <button name="save" class="btn btn-sm btn-info">Save</button>
+    <a href="{% url 'forum:topic' topic.pk %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+</form>
+{% endblock content %}
