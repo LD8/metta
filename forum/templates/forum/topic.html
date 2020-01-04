@@ -6,7 +6,18 @@
 
 {% block content %}
 <div class="row">
-    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white shadow-lg rounded-lg">
+    <div class="col-lg-9 m-0 p-0" style="z-index: 1;">
+        {% for post in topic.post_set.all %}
+        <div class="bg-white rounded-left shadow-lg p-3 mb-1">
+            <h5 class="font-weight-light">
+                <a href="{% url 'forum:post' topic.pk post.pk %}">{{ post.title }}</a></h5>
+            <hr>
+            <p>{{ post }}</p>
+            <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white rounded-right">
         <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
             class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
         <div id="fixeddiv">
@@ -24,17 +35,6 @@
             <a href="{% url 'forum:topics' %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">All Topics</a>
         </div>
     </aside>
-    <div class="col-lg-9 m-0 p-0">
-        {% for post in topic.post_set.all %}
-        <div class="bg-white rounded-lg shadow-lg p-3 mb-1">
-            <h5 class="font-weight-light">
-                <a href="{% url 'forum:post' topic.pk post.pk %}">{{ post.title }}</a></h5>
-            <hr>
-            <p>{{ post }}</p>
-            <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
-        </div>
-        {% endfor %}
-    </div>
 </div>
 
 {% endblock content %}

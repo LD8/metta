@@ -1,24 +1,18 @@
 {% extends 'forum/base.html' %}
 
 {% block header %}
-<h2 class="font-weight-light">Welcome to Metta Forum{% if user.is_authenticated %}
-    <span>, Dear {{user.username}}!</span>{% else %}<span>!</span></h2>
-<p class="text-black-50">&vellip; We hope you'll find peace and Nibbāna.</p>
+{% if user.is_authenticated %}
+<h2 class="font-weight-light">Welcome to Metta Forum,
+    <span>Dear {{user.username}}!</span><span>!</span></h2>
+{% else %}
+<h2 class="font-weight-light">Welcome to Metta Forum!</h2>
 {% endif %}
+<p class="text-black-50">&vellip; We hope you'll find peace and Nibbāna.</p>
 {% endblock header %}
 
 {% block content %}
 <div class="row">
-    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white shadow-lg rounded-lg">
-        <div id="fixeddiv">
-            <p class="text-muted">- Topics -</p>
-            {% for topic in topics %}
-            <a class="btn btn-outline-light text-muted rounded-lg mb-2 p-2 shadow-sm" style="width:90%;"
-                href="#{{topic}}">{{ topic }}</a>
-            {% endfor %}
-        </div>
-    </aside>
-    <div class="col-lg-9 m-0 p-0">
+    <div class="col-lg-9 m-0 p-0" style="z-index: 1;">
         {% for topic in topics %}
         <section class="p-4 bg-white shadow-lg rounded-lg border-bottom " id="{{topic}}">
             <div class="mb-4">
@@ -39,6 +33,15 @@
         </section>
         {% endfor %}
     </div>
+    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white">
+        <div id="fixeddiv">
+            <p class="text-muted">- Topics -</p>
+            {% for topic in topics %}
+            <a class="btn btn-outline-light text-muted rounded-lg mb-2 p-2 shadow-sm" style="width:90%;"
+                href="#{{topic}}">{{ topic }}</a>
+            {% endfor %}
+        </div>
+    </aside>
 </div>
 
 {% endblock content %}

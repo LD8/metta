@@ -1,12 +1,20 @@
 {% extends 'forum/base.html' %}
 
 {% block header %}
-<h2 class="font-weight-light">{{ post.title }}</h2>
+<h2 class="font-weight-light">{{topic}} &raquo; {{ post.title }}</h2>
 {% endblock header %}
 
 {% block content %}
 <div class="row">
-    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white shadow-lg rounded-lg">
+    <div class="col-lg-9 m-0 p-0 bg-white shadow-lg rounded-lg p-3">
+        {% if post.author == user %}
+        <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
+            class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
+        {% endif %}
+        <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+        <p>{{ post.content | linebreaks }}</p>
+    </div>
+    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white">
         <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
             class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
         <div id="fixeddiv">
@@ -24,14 +32,6 @@
             <a href="{% url 'forum:topic' topic.pk %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">Go back to {{topic}}</a>
         </div>
     </aside>
-    <div class="col-lg-9 m-0 p-0 bg-white shadow-lg p-3">
-        {% if post.author == user %}
-        <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
-            class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
-        {% endif %}
-        <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
-        <p>{{ post.content | linebreaks }}</p>
-    </div>
 </div>
 
 
