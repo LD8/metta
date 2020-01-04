@@ -1,14 +1,13 @@
 {% extends 'forum/base.html' %}
 
 {% block header %}
-<h5 class="font-weight-light">Searching results of <i class="font-weight-normal">" {{ query }} "</i>{% if search_result_topic %} under topic
+<h5 class="font-weight-light">Searching results of <i class="font-weight-normal">" {{ query }}
+        "</i>{% if search_result_topic %} under topic
     <i class="font-weight-normal">{{ search_result_topic }}</i>{% endif %}:</h5>
 {% endblock header %}
 
 {% block content %}
 <div class="row">
-
-
     <section class="col-md-9 p-3 bg-white shadow-lg">
         <p class="text-muted text-center">- Posts -</p>
         {% for post in search_result_posts %}
