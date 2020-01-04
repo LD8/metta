@@ -5,13 +5,34 @@
 {% endblock header %}
 
 {% block content %}
-<div class=" bg-white shadow-lg p-3">
-    {% if post.author == user %}
-    <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
-        class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
-    {% endif %}
-    <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
-    <p>{{ post.content | linebreaks }}</p>
+<div class="row">
+    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white shadow-lg rounded-lg">
+        <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
+            class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
+        <div id="fixeddiv">
+            <p class="text-muted">- Other Posts -</p>
+            {% for ref_post in topic.post_set.all|slice:':10' %}
+            {% if ref_post == post %}
+            <p class="btn btn-secondary rounded-lg mb-2 shadow-sm" style="width:90%;">{{ ref_post.title }}</p>
+            {% else %}
+            <a class="btn btn-outline-light text-dark rounded-lg mb-2 shadow-sm" style="width:90%;"
+                href="{% url 'forum:post' topic.pk ref_post.pk %}">{{ ref_post.title }}</a>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="">
+            <a href="{% url 'forum:topic' topic.pk %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">Go back to {{topic}}</a>
+        </div>
+    </aside>
+    <div class="col-lg-9 m-0 p-0 bg-white shadow-lg p-3">
+        {% if post.author == user %}
+        <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
+            class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
+        {% endif %}
+        <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+        <p>{{ post.content | linebreaks }}</p>
+    </div>
 </div>
+
 
 {% endblock content %}

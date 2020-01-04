@@ -2,31 +2,43 @@
 
 {% block header %}
 <h2 class="font-weight-light">Welcome to Metta Forum{% if user.is_authenticated %}
-<span>, Dear {{user.username}}!</span>{% else %}<span>!</span>
-{% endif %}</h2>
+    <span>, Dear {{user.username}}!</span>{% else %}<span>!</span></h2>
+<p class="text-black-50">&vellip; We hope you'll find peace and Nibbāna.</p>
+{% endif %}
 {% endblock header %}
 
 {% block content %}
-{% for topic in topics %}
-<section class="p-4 bg-white shadow-lg rounded-lg border-bottom mb-5">
-    <div class="mb-4">
-        <h3 class=""><a href="{% url 'forum:topic' topic.pk %}">{{ topic }}</a></h3>
-        <p class="">{{ topic.description }}</p>
-    </div>
-        <div class="row mb-2">
-            {% for post in topic.post_set.all|slice:":4" %}
-            <div class="col-md-6 mb-3">
-                <h5 class="font-weight-light">
-                    <a href="{% url 'forum:post' post.topic.pk post.pk %}">{{ post.title }}</a></h5>
-                <hr>
-                <p>{{ post }}</p>
-            </div>
+<div class="row">
+    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white shadow-lg rounded-lg">
+        <div id="fixeddiv">
+            <p class="text-muted">- Topics -</p>
+            {% for topic in topics %}
+            <a class="btn btn-outline-light text-muted rounded-lg mb-2 p-2 shadow-sm" style="width:90%;"
+                href="#{{topic}}">{{ topic }}</a>
             {% endfor %}
-            <a href="{% url 'forum:topic' topic.pk %}" class="text-muted ml-auto mr-4">more posts...</a>
         </div>
-
-    
-</section>
-{% endfor %}
+    </aside>
+    <div class="col-lg-9 m-0 p-0">
+        {% for topic in topics %}
+        <section class="p-4 bg-white shadow-lg rounded-lg border-bottom " id="{{topic}}">
+            <div class="mb-4">
+                <h3><a href="{% url 'forum:topic' topic.pk %}">{{ topic }}</a></h3>
+                <p>{{ topic.description }}</p>
+            </div>
+            <div class="row mb-2">
+                {% for post in topic.post_set.all|slice:":4" %}
+                <div class="col-md-6 mb-3">
+                    <h5 class="font-weight-light">
+                        <a href="{% url 'forum:post' post.topic.pk post.pk %}">{{ post.title }}</a></h5>
+                    <hr>
+                    <p>{{ post }}</p>
+                </div>
+                {% endfor %}
+                <a href="{% url 'forum:topic' topic.pk %}" class="text-muted ml-auto mr-4">more posts...</a>
+            </div>
+        </section>
+        {% endfor %}
+    </div>
+</div>
 
 {% endblock content %}

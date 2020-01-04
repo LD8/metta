@@ -9,4 +9,7 @@ urlpatterns = [
     path('topic_<int:topic_pk>/new_post/', views.new_post, name='new_post'),
     path('topic_<int:topic_pk>/<int:post_pk>/', views.post, name='post'),
     path('topic_<int:topic_pk>/<int:post_pk>/edit', views.edit_post, name='edit_post'),
+
+    path('search/', views.search, name='search'),
+    path('search/<query>/topic_<int:topic_pk>/', views.search, name='search_topic'),
 ]

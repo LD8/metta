@@ -1,7 +1,9 @@
-from django.shortcuts import render, Http404,redirect, get_object_or_404
+from django.shortcuts import render, Http404, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import Topic, Post
 from .forms import TopicForm, PostForm
+# Q helps to search A or B at the same time
+from django.db.models import Q
 
 
 def index(request):
@@ -18,7 +20,8 @@ def topics(request):
 def topic(request, topic_pk):
     '''displaying all the posts under one topic'''
     topic = get_object_or_404(Topic, pk=topic_pk)
-    return render(request, 'forum/topic.html', {'topic': topic})
+    topics = Topic.objects.order_by('-date_added')
+    return render(request, 'forum/topic.html', {'topic': topic, 'topics': topics})
 
 
 def post(request, topic_pk, post_pk):
@@ -70,3 +73,44 @@ def edit_post(request, topic_pk, post_pk):
         return redirect('forum:post', topic_pk=topic_pk, post_pk=post_pk)
 
     return render(request, 'forum/edit_post.html', {'form': form, 'topic': topic, 'post': post})
+
+
+def search(request, query=None, topic_pk=None):
+    # if no-input submission --> redirect to topics for users to browse
+    if request.GET.get('query') == '':
+        return redirect('forum:topics')
+
+    # if user searching from nav bar, get the request query value stored properly 
+    if query == None:
+        query = request.GET.get('query')
+
+    # search through all Post objects, in titles and contents
+    search_result_posts = Post.objects.filter(
+        Q(title__icontains=query) |
+        Q(content__icontains=query) |
+        Q(date_added__icontains=query))
+
+    # because there are only a few topics, 
+    # use filtered posts to determine topics for displaying in the sidebar
+    search_result_topics = []
+    for post in search_result_posts:
+        if post.topic not in search_result_topics:
+            search_result_topics.append(post.topic)
+
+    # passing an empty topic if topic_pk=None
+    search_result_topic = {}
+
+    # if to check results in a specific topic
+    if topic_pk != None:
+        # make sure this topic exists and override the default value
+        search_result_topic = get_object_or_404(Topic, pk=topic_pk)
+        # search through all the posts in this topic, and override previous search_results_posts
+        search_result_posts = search_result_topic.post_set.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query))
+
+    return render(request, 'forum/search.html', {
+        'search_result_posts': search_result_posts,
+        'search_result_topics': search_result_topics,
+        'search_result_topic': search_result_topic,
+        'query': query})
