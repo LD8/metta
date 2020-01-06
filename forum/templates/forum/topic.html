@@ -12,7 +12,7 @@
             <h5 class="font-weight-light">
                 <a href="{% url 'forum:post' topic.pk post.pk %}">{{ post.title }}</a></h5>
             <hr>
-            <p>{{ post }}</p>
+            <p>{{ post.content|slice:':500' }}...</p>
             <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
         </div>
         {% endfor %}

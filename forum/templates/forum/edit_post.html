@@ -9,7 +9,7 @@
 <form class="form bg-white p-3 shadow-lg" action="{% url 'forum:edit_post' topic.pk post.pk%}" method="POST">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <button name="save" class="btn btn-sm btn-info">Save</button>
+    <button name="save" class="btn btn-sm btn-info px-3">Save</button>
     <a href="{% url 'forum:post' topic.pk post.pk%}" class="btn btn-sm btn-outline-danger">Cancel</a>
     <button name="delete" class="btn btn-sm btn-danger float-right">Delete</button>
 </form>

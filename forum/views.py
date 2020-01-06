@@ -1,7 +1,7 @@
 from django.shortcuts import render, Http404, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Topic, Post
-from .forms import TopicForm, PostForm
+from .models import Topic, Post, Comment
+from .forms import TopicForm, PostForm, CommentForm
 # Q helps to search A or B at the same time
 from django.db.models import Q
 
@@ -24,14 +24,62 @@ def topic(request, topic_pk):
     return render(request, 'forum/topic.html', {'topic': topic, 'topics': topics})
 
 
-def post(request, topic_pk, post_pk):
-    '''displaying one post under a topic'''
+def post(request, topic_pk, post_pk, comment_pk=None):
+    '''displaying one post under a topic and all the comments under this post'''
+    # get existing topic and post
     topic = get_object_or_404(Topic, pk=topic_pk)
     try:
         post = topic.post_set.get(pk=post_pk)
     except:
         raise Http404
-    return render(request, 'forum/post.html', {'topic': topic, 'post': post})
+
+    # get all the comments under this post
+    comments = post.comment_set.all()
+
+    # deal with comment editing
+    if comment_pk != None:
+        comment_to_be_edited = get_object_or_404(Comment, pk=comment_pk)
+
+        if 'delete' in request.POST:
+            comment_to_be_edited.delete()
+            return redirect('forum:post', topic_pk, post_pk)
+        
+        # get form with existing data ready to be rendered or edited/updated
+        edit_comment_form = CommentForm(instance=comment_to_be_edited)
+
+        if 'update' in request.POST:
+            edit_comment_form = CommentForm(instance=comment_to_be_edited, data=request.POST)
+            if edit_comment_form.is_valid():
+                edit_comment_form.save()
+                return redirect('forum:post', topic_pk, post_pk)
+
+        # if not to delete or to update, simply render the existing form with comment data ready to be edited
+        return render(request, 'forum/post.html', {
+                'topic': topic,
+                'post': post,
+                'comments': comments,
+                'comment_to_be_edited': comment_to_be_edited,
+                'edit_comment_form': edit_comment_form})
+
+    # if not posting a new comment, simply render the form
+    if request.method != 'POST':
+        form = CommentForm()
+    else:
+        # deal with posting a new comment
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.post = post
+            new_comment.author = request.user
+            new_comment.save()
+            return redirect('forum:post', topic_pk, post_pk)
+
+    # render the post and all the comments and the empty/error form
+    return render(request, 'forum/post.html', {
+        'topic': topic,
+        'post': post,
+        'comments': comments,
+        'form': form})
 
 
 @login_required
@@ -80,7 +128,7 @@ def search(request, query=None, topic_pk=None):
     if request.GET.get('query') == '':
         return redirect('forum:topics')
 
-    # if user searching from nav bar, get the request query value stored properly 
+    # if user searching from nav bar, get the request query value stored properly
     if query == None:
         query = request.GET.get('query')
 
@@ -90,7 +138,7 @@ def search(request, query=None, topic_pk=None):
         Q(content__icontains=query) |
         Q(date_added__icontains=query))
 
-    # because there are only a few topics, 
+    # because there are only a few topics,
     # use filtered posts to determine topics for displaying in the sidebar
     search_result_topics = []
     for post in search_result_posts:

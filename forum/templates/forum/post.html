@@ -1,4 +1,5 @@
 {% extends 'forum/base.html' %}
+{% load bootstrap4 %}
 
 {% block header %}
 <h2 class="font-weight-light">{{topic}} &raquo; {{ post.title }}</h2>
@@ -6,14 +7,65 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-9 m-0 p-0 bg-white shadow-lg rounded-lg p-3">
-        {% if post.author == user %}
-        <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
-            class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
-        {% endif %}
-        <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
-        <p>{{ post.content | linebreaks }}</p>
+
+    <div class="col-lg-9 bg-white shadow-lg rounded-lg p-3">
+        <div class="post mb-5">
+            {% if post.author == user %}
+            <a href="{% url 'forum:edit_post' post.topic.pk post.pk %}"
+                class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
+            {% endif %}
+            <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+            <p>{{ post.content | linebreaks }}</p>
+        </div>
+        <div class="comments border-top">
+            <h5 class="font-weight-light mt-3">Comments</h5>
+            {% for comment in comments %}
+            <div class="comment mt-3 border p-3 rounded-lg shadow-sm" id="{{ comment.pk }}">
+
+                {% if comment == comment_to_be_edited %}
+                <div class="d-flex justify-content-between align-items-start border-bottom">
+                    <p class="font-weight-bold">{{ comment.author }}</p>
+                    <p class="font-weight-light">{{ comment.date_added }}</p>
+                </div>
+                <form action="{% url 'forum:edit_comment' topic.pk post.pk comment.pk %}" method="POST">
+                    {% csrf_token %}
+                    {% bootstrap_form edit_comment_form %}
+                    <button name="update" class="btn btn-sm btn-info">update</button>
+                    <a href="{% url 'forum:post' topic.pk post.pk %}" 
+                        class="btn btn-sm btn-outline-danger">cancel</a>
+                    <button name="delete" class="btn btn-sm btn-danger float-right">delete</button>
+                </form>
+
+                {% else %}
+
+                <div class="d-flex justify-content-between border-bottom">
+                    <p class="font-weight-bold">{{ comment.author }}</p>
+                    <p class="font-weight-light">{{ comment.date_added }}</p>
+                </div>
+                <p class="mt-4">{{ comment.content | linebreaks }}</p>
+                {% if comment.author == user %}
+                <a href="{% url 'forum:edit_comment' topic.pk post.pk comment.pk %}"
+                    class="shadow-sm btn btn-sm btn-outline-secondary px-3">edit</a>
+                {% endif %}
+
+                {% endif %}
+            </div>
+            {% empty %}
+            <p class="text-muted">No comment for this post yet. Anything you'd like to share?</p>
+            {% endfor %}
+            
+            {% if form %}
+            <form action="{% url 'forum:post' topic.pk post.pk %}" method="POST" class="form mt-5">
+                <p class="text-muted">Please edit your comment below:</p>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+                <button name="post" class="btn btn-sm btn-info px-3">post</button>
+            </form>
+            {% endif %}
+
+        </div>
     </div>
+
     <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white">
         <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
             class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
@@ -29,9 +81,11 @@
             {% endfor %}
         </div>
         <div class="">
-            <a href="{% url 'forum:topic' topic.pk %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">Go back to {{topic}}</a>
+            <a href="{% url 'forum:topic' topic.pk %}" style="width: 90%;"
+                class="mt-5 btn btn-outline-secondary shadow-sm">Go back to {{topic}}</a>
         </div>
     </aside>
+
 </div>
 
 
