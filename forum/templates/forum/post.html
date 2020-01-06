@@ -15,7 +15,7 @@
                 class="shadow-sm btn btn-sm btn-outline-secondary float-right px-3">edit</a>
             {% endif %}
             <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
-            <p>{{ post.content | linebreaks }}</p>
+            <p class="pt-1">{{ post.content | linebreaks }}</p>
         </div>
         <div class="comments border-top">
             <h5 class="font-weight-light mt-3">Comments</h5>
@@ -33,13 +33,13 @@
                     <button name="update" class="btn btn-sm btn-info">update</button>
                     <a href="{% url 'forum:post' topic.pk post.pk %}" 
                         class="btn btn-sm btn-outline-danger">cancel</a>
-                    <button name="delete" class="btn btn-sm btn-danger float-right">delete</button>
+                    <button name="delete" class="confirm-delete btn btn-sm btn-danger float-right">delete</button>
                 </form>
 
                 {% else %}
 
                 <div class="d-flex justify-content-between border-bottom">
-                    <p class="font-weight-bold">{{ comment.author }}</p>
+                    <p class="font-weight-bold">{{ comment.author|title }}</p>
                     <p class="font-weight-light">{{ comment.date_added }}</p>
                 </div>
                 <p class="mt-4">{{ comment.content | linebreaks }}</p>
@@ -66,16 +66,16 @@
         </div>
     </div>
 
-    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white">
+    <aside id="" class="col-lg-3 p-3 text-center bg-white">
         <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
             class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
-        <div id="fixeddiv">
-            <p class="text-muted">- Other Posts -</p>
+        <a class="btn btn-outline-info mb-2" role="button" href="#postMenu" data-toggle="collapse" aria-expanded="false" aria-controls="postMenu" style="width: 90%">- Other Posts -</a>
+        <div class="collapse" id="postMenu">
             {% for ref_post in topic.post_set.all|slice:':10' %}
             {% if ref_post == post %}
-            <p class="btn btn-secondary rounded-lg mb-2 shadow-sm" style="width:90%;">{{ ref_post.title }}</p>
+            <p class="btn btn-info disabled mb-2 shadow-sm" style="width:90%;">{{ ref_post.title }}</p>
             {% else %}
-            <a class="btn btn-outline-light text-dark rounded-lg mb-2 shadow-sm" style="width:90%;"
+            <a class="btn btn-outline-light text-dark mb-2 shadow-sm" style="width:90%;"
                 href="{% url 'forum:post' topic.pk ref_post.pk %}">{{ ref_post.title }}</a>
             {% endif %}
             {% endfor %}

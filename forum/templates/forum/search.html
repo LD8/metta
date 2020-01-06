@@ -8,18 +8,7 @@
 
 {% block content %}
 <div class="row">
-    <section class="col-md-9 p-3 bg-white shadow-lg">
-        <p class="text-muted text-center">- Posts -</p>
-        {% for post in search_result_posts %}
-        <div class="card shadow-sm p-2 mb-4">
-            <h5 class="card-header font-weight-light">
-                <a href="{% url 'forum:post' post.topic.pk post.pk %}">{{ post.title }}</a></h5>
-            <p class="card-body">{{ post }}</p>
-        </div>
-        {% empty %}
-        <p class="text-muted">No post found...</p>
-        {% endfor %}
-    </section>
+    
     <aside class="col-md-3 p-3 bg-white text-center">
         <p class="text-muted">- Topics -</p>
         <div class="">
@@ -36,5 +25,19 @@
             {% endfor %}
         </div>
     </aside>
+
+    <section class="col-md-9 p-3 bg-white shadow-lg">
+        <p class="text-muted text-center">- Posts -</p>
+        {% for post in search_result_posts %}
+        <div class="card shadow-sm p-2 mb-4">
+            <h5 class="card-header font-weight-light">
+                <a href="{% url 'forum:post' post.topic.pk post.pk %}">{{ post.title }}</a></h5>
+            <p class="card-body">{{ post.content|slice:':300' }}...</p>
+        </div>
+        {% empty %}
+        <p class="text-muted">No post found...</p>
+        {% endfor %}
+    </section>
+
 </div>
 {% endblock content %}

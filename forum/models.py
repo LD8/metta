@@ -6,6 +6,9 @@ class Topic(models.Model):
     description = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
+    class Meta:
+        ordering = ['-date_added']
+
     def __str__(self):
         return self.name
 
@@ -15,6 +18,9 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     date_added = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-date_added']
 
     def __str__(self):
         return '{}, Topic: {}'.format(self.title, self.topic)

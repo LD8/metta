@@ -6,5 +6,7 @@ urlpatterns = [
     # include django authentication urls
     path('', include('django.contrib.auth.urls')),
     # the registration url
-    path('register/', views.register, name='register')
+    path('register/', views.register, name='register'),
+    # user's profile page
+    path('profile/', views.profile, name='profile'),
 ]

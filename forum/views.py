@@ -20,7 +20,7 @@ def topics(request):
 def topic(request, topic_pk):
     '''displaying all the posts under one topic'''
     topic = get_object_or_404(Topic, pk=topic_pk)
-    topics = Topic.objects.order_by('-date_added')
+    topics = Topic.objects.all()
     return render(request, 'forum/topic.html', {'topic': topic, 'topics': topics})
 
 

@@ -9,22 +9,22 @@
     <div class="col-lg-9 m-0 p-0" style="z-index: 1;">
         {% for post in topic.post_set.all %}
         <div class="bg-white rounded-left shadow-lg p-3 mb-1">
-            <h5 class="font-weight-light">
-                <a href="{% url 'forum:post' topic.pk post.pk %}">{{ post.title }}</a></h5>
-            <hr>
-            <p>{{ post.content|slice:':500' }}...</p>
-            <p class="text-muted">{{ post.date_added | date:'Y-m-d H:i' }}</p>
+            {% include 'forum/posts_brief.html' with topic=post.topic post=post num=500 %}
         </div>
         {% endfor %}
     </div>
-    <aside id="sidebar" class="col-lg-3 p-3 text-center bg-white rounded-right">
+    <aside id="" class="col-lg-3 p-3 text-center bg-white rounded-right">
         <a href="{% url 'forum:new_post' topic.pk %}" style="width:90%"
             class="mb-4 btn btn-outline-secondary shadow-sm">Write a post</a>
-        <div id="fixeddiv">
-            <p class="text-muted">- Other Topics -</p>
+
+        <button class="btn btn-outline-success shadow-sm mb-2" data-toggle="collapse" data-target="#topicMenu"
+            aria-expanded="false" aria-controls="topicMenu" style="width:90%;">- Other Topics -</button>
+        <!-- aria-controls tag is for accessability purposes-->
+
+        <div class="collapse" id="topicMenu">
             {% for ref_topic in topics %}
             {% if ref_topic == topic %}
-            <p class="btn btn-secondary rounded-lg mb-2 p-2 shadow-sm" style="width:90%;">{{ ref_topic }}</p>
+            <p class="btn btn-success mb-2 p-2 shadow-sm disabled" style="width:90%;">{{ ref_topic }}</p>
             {% else %}
             <a class="btn btn-outline-light text-muted rounded-lg mb-2 p-2 shadow-sm" style="width:90%;"
                 href="{% url 'forum:topic' ref_topic.pk %}">{{ ref_topic }}</a>
@@ -32,7 +32,8 @@
             {% endfor %}
         </div>
         <div>
-            <a href="{% url 'forum:topics' %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">All Topics</a>
+            <a href="{% url 'forum:topics' %}" style="width: 90%;" class="mt-5 btn btn-outline-secondary shadow-sm">All
+                Topics</a>
         </div>
     </aside>
 </div>
