@@ -9,7 +9,7 @@
         share freely of their experiences and discuss their meditation techniques lovingly, friendly and in goodwill.</p>
     {% if user.is_authenticated %}
     <a href="{% url 'forum:topics' %}" class="shadow-sm btn btn-secondary p-2 px-4 mt-3">Welcome Back {{ user.username|title }} &raquo;</a>
-    <a href="{% url 'users:profile' %}" class="shadow-sm btn btn-secondary p-2 px-3 mt-3">Your Profile <i class="fas fa-dharmachakra fa-lg fa-spin"></i></a>
+    <a href="{% url 'users:profile' %}" class="shadow-sm btn btn-outline-secondary p-2 px-3 mt-3">Your Profile <i class="fas fa-dharmachakra fa-lg fa-spin"></i></a>
     {% else %}
     <a href="{% url 'users:register' %}" class="shadow-sm btn btn-secondary p-2 px-4 mt-3 mr-1">Register &raquo;</a>
     <a href="{% url 'forum:topics' %}" class="shadow-sm btn btn-outline-secondary p-2 px-4 mt-3">Visit as a Guest <i class="fas fa-dharmachakra fa-lg fa-spin"></i></a>
