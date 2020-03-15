@@ -1,5 +1,7 @@
 import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 # Heroku settings
 import django_heroku
 django_heroku.settings(locals())
@@ -9,15 +11,7 @@ if os.environ.get('DEBUG') == 'TRUE':
 	DEBUG = True
 elif os.environ.get('DEBUG') == 'FALSE':
 	DEBUG = False
-# now you can set environment variables on Heroku after pushing this to heroku master
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'u2pm6@t1nxsncs5p$us_h6$ilj5*vr(p(oum+nmu-b@9$6pul4'
 
 
