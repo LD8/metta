@@ -2,15 +2,6 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Heroku settings
-import django_heroku
-django_heroku.settings(locals())
-
-# securing the live project
-if os.environ.get('DEBUG') == 'TRUE':
-	DEBUG = True
-elif os.environ.get('DEBUG') == 'FALSE':
-	DEBUG = False
 
 SECRET_KEY = 'u2pm6@t1nxsncs5p$us_h6$ilj5*vr(p(oum+nmu-b@9$6pul4'
 
@@ -117,3 +108,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 LOGIN_URL = 'users:login'
+
+
+# Heroku settings
+import django_heroku
+django_heroku.settings(locals())
+
+# securing the live project
+if os.environ.get('DEBUG') == 'TRUE':
+	DEBUG = True
+elif os.environ.get('DEBUG') == 'FALSE':
+	DEBUG = False
