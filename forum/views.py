@@ -14,7 +14,9 @@ def index(request):
 def topics(request):
     '''displaying all the topics in sections with first 4 posts'''
     topics = Topic.objects.order_by('-date_added')
-    return render(request, 'forum/topics.html', {'topics': topics})
+    context = {'topics': topics}
+    print(context)
+    return render(request, 'forum/topics.html', context)
 
 
 def topic(request, topic_pk):
