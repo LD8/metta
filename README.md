@@ -1,6 +1,6 @@
 # Metta Forum
 
-#### Video Demo: <URL [HERE](https://youtube.com)>
+#### Video Demo: <URL [HERE](https://youtu.be/64pgPrqFRcg)>
 
 #### Visit website deployed on heroku: <URL [HERE](https://metta-forum.herokuapp.com/)>
 
